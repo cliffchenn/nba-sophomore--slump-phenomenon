@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 from secrets import best_urls, best_players, worst_urls, worst_players
 import time
+import matplotlib.pyplot as plt
+
 
 
 def combine_data(url, player):
@@ -79,35 +81,72 @@ if __name__ == "__main__":
 
     # determine which player to compare
     compare_dict = {}
-    player = "Lowry"  # change player
-    compare_dict[player] = "https://www.basketball-reference.com/players/l/lowryky01.html"  # change stat page url
+
+    player = "Jaylen Brown"  # change player
+    compare_dict[player] = "https://www.basketball-reference.com/players/b/brownja02.html"  # change stat page url
+
 
     # find best years
     best_rookie_df = clean_data1(scrape_data_rook(best_player_directory, best_players), best_players)
     best_soph_df = clean_data1(scrape_data_soph(best_player_directory, best_players), best_players)
     delta_best_df = (best_soph_df - best_rookie_df).round(1)
-    # print("- - - BEST DELTA - - - \n", delta_best_df)
+
 
     # find worst years
     worst_rookie_df = clean_data1(scrape_data_rook(worst_player_directory, worst_players), worst_players)
     worst_soph_df = clean_data1(scrape_data_soph(worst_player_directory, worst_players), worst_players)
     delta_worst_df = (worst_soph_df - worst_rookie_df).round(1)
-    # print("- - - WORST DELTA - - -\n", delta_worst_df)
+
 
     # store max and min for each
     range_df = find_range(delta_best_df, delta_worst_df).sort_index(ascending=True)
     range_df.columns = [player]
-    # print(range_df)
 
     # finding average
     avg_prog_df = pd.DataFrame(pd.concat([delta_best_df, delta_worst_df], axis=1, sort=False, join="inner")
                                .mean(axis=1), columns=[player]).round(1).sort_index(ascending=True)
-    # print(avg_prog_df)
 
     # use averages to normalize values - divide games played by 82
     compare_player = [player]
     compare_df = (clean_data1(scrape_data_soph(compare_dict, compare_player), compare_player) -
                  clean_data1(scrape_data_rook(compare_dict, compare_player), compare_player)).round(1).sort_index(ascending=True)
+
+    # create a single value index
+    avg_index = (avg_prog_df / range_df).mean(axis=0)[0]
+    player_index = ((compare_df - avg_prog_df) / range_df).mean(axis=0)[0]
+    final_score = (player_index - avg_index)/avg_index
+
+    # print the overall percentage difference between average performance and player performance
+    # print("\n- - - " + player, end="")
+    # print(f" Percent Difference:{(final_score): .2f}% - - -")
+
+    # append player and player index to csv
+    # player_store = pd.DataFrame({player: [final_score]}).transpose()
+    # player_store.to_csv("player_indices.csv", mode="a", header=False)
+
+    # Visualizing Improvement Indices
+    indices = pd.read_csv("player_indices.csv", names=["player", "%_change"])
+
+    plt.figure(figsize=(15, 10))
+    plt.bar(indices["player"], indices["%_change"], align="center", width=0.8, edgecolor="black", linewidth=2)
+    plt.title("Percent Improvement Between Rookie and Sophomore Year")
+    plt.xticks(indices["player"], rotation=20)
+    plt.style.use("ggplot")
+    plt.xlabel("Player")
+    plt.ylabel("Percent Change (%)")
+    plt.grid(axis="y")
+
+    print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
+
+    plt.show()
+
+
+
+
+
+
+
+
     # print(compare_df)
 
     # create a single value index
@@ -120,4 +159,5 @@ if __name__ == "__main__":
 
 
     print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
+
 
