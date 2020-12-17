@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from secrets import best_urls, best_players, worst_urls, worst_players
 import time
+import matplotlib.pyplot as plt
 
 
 def combine_data(url, player):
@@ -79,8 +80,8 @@ if __name__ == "__main__":
 
     # determine which player to compare
     compare_dict = {}
-    player = "Lowry"  # change player
-    compare_dict[player] = "https://www.basketball-reference.com/players/l/lowryky01.html"  # change stat page url
+    player = "Jaylen Brown"  # change player
+    compare_dict[player] = "https://www.basketball-reference.com/players/b/brownja02.html"  # change stat page url
 
     # find best years
     best_rookie_df = clean_data1(scrape_data_rook(best_player_directory, best_players), best_players)
@@ -114,8 +115,29 @@ if __name__ == "__main__":
     # print("\n- - - " + player, end="")
     # print(f" Percent Difference:{(final_score): .2f}% - - -")
 
-    
+    # append player and player index to csv
+    # player_store = pd.DataFrame({player: [final_score]}).transpose()
+    # player_store.to_csv("player_indices.csv", mode="a", header=False)
 
+    # Visualizing Improvement Indices
+    indices = pd.read_csv("player_indices.csv", names=["player", "%_change"])
+
+    plt.figure(figsize=(15, 10))
+    plt.bar(indices["player"], indices["%_change"], align="center", width=0.8, edgecolor="black", linewidth=2)
+    plt.title("Percent Improvement Between Rookie and Sophomore Year")
+    plt.xticks(indices["player"], rotation=20)
+    plt.style.use("ggplot")
+    plt.xlabel("Player")
+    plt.ylabel("Percent Change (%)")
+    plt.grid(axis="y")
 
     print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
+
+    plt.show()
+
+
+
+
+
+
 
