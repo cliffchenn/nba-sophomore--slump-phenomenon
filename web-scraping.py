@@ -6,6 +6,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+
 def combine_data(url, player):
     diction = {}
     for i in range(len(player)):
@@ -80,18 +81,22 @@ if __name__ == "__main__":
 
     # determine which player to compare
     compare_dict = {}
+
     player = "Jaylen Brown"  # change player
     compare_dict[player] = "https://www.basketball-reference.com/players/b/brownja02.html"  # change stat page url
+
 
     # find best years
     best_rookie_df = clean_data1(scrape_data_rook(best_player_directory, best_players), best_players)
     best_soph_df = clean_data1(scrape_data_soph(best_player_directory, best_players), best_players)
     delta_best_df = (best_soph_df - best_rookie_df).round(1)
 
+
     # find worst years
     worst_rookie_df = clean_data1(scrape_data_rook(worst_player_directory, worst_players), worst_players)
     worst_soph_df = clean_data1(scrape_data_soph(worst_player_directory, worst_players), worst_players)
     delta_worst_df = (worst_soph_df - worst_rookie_df).round(1)
+
 
     # store max and min for each
     range_df = find_range(delta_best_df, delta_worst_df).sort_index(ascending=True)
@@ -139,5 +144,20 @@ if __name__ == "__main__":
 
 
 
+
+
+
+    # print(compare_df)
+
+    # create a single value index
+
+    avg_index = (avg_prog_df / range_df).mean(axis=0)[0]
+    player_index = ((compare_df - avg_prog_df) / range_df).mean(axis=0)[0]
+
+    print("\n- - - " + player, end="")
+    print(f" Percent Difference:{((player_index - avg_index)/avg_index): .2f}% - - -")
+
+
+    print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
 
 
