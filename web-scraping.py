@@ -88,7 +88,6 @@ def is_slump(rook_df, soph_df, slump):
     return delta_df
 
 
-
 def find_range(best, worst):
     range_diff = pd.DataFrame(best.max(axis=1) - worst.min(axis=1), columns=["range"]).round(1)
     for i, value in enumerate(range_diff.range):
@@ -105,8 +104,8 @@ if __name__ == "__main__":
 
     # determine which player to compare
     compare_dict = {}
-    player = "Jimmer"  # change player
-    compare_dict[player] = "https://www.basketball-reference.com/players/f/fredeji01.html"  # change stat page url
+    player = "Shane Battier"  # change player
+    compare_dict[player] = "https://www.basketball-reference.com/players/b/battish01.html"  # change stat page url
 
     # find best years
     best_rookie_df = clean_data1(scrape_data_rook(best_player_directory, best_players), best_players)
@@ -143,7 +142,7 @@ if __name__ == "__main__":
     print(f" Percent Difference: {(final_score): .2f}% - - -")
 
     # Visualizing Improvement Indices
-    """indices = pd.read_csv("player_indices.csv", names=["player", "%_change"])
+    indices = pd.read_csv("player_indices.csv", names=["player", "%_change"])
 
     plt.figure(figsize=(15, 10))
     plt.bar(indices["player"], indices["%_change"], align="center", width=0.8, edgecolor="black", linewidth=2)
@@ -152,7 +151,7 @@ if __name__ == "__main__":
     plt.style.use("ggplot")
     plt.xlabel("Player")
     plt.ylabel("Percent Change (%)")
-    plt.grid(axis="y")"""
+    plt.grid(axis="y")
 
     # slump_df = pd.DataFrame(pd.concat([delta_best_slump, delta_worst_slump]))
     slump_df = pd.concat([delta_best_slump, delta_worst_slump], axis=0)
@@ -174,8 +173,8 @@ if __name__ == "__main__":
     print("The Player Experienced the Sophomore Slump: ", y_hat[0])
 
     # append player, player index, slump to csv
-    # player_store = pd.DataFrame({player: [final_score, y_hat[0]]}).transpose()
-    # player_store.to_csv("player_indices.csv", mode="a", header=False)
+    player_store = pd.DataFrame({player: [final_score, y_hat[0]]}).transpose()
+    player_store.to_csv("player_indices.csv", mode="a", header=False)
 
     print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
 
