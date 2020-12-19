@@ -1,22 +1,24 @@
-best_urls = ["https://www.basketball-reference.com/players/i/irvinky01.html",
+best_urls = ["https://www.basketball-reference.com/players/m/mingya01.html",
+             "https://www.basketball-reference.com/players/i/irvinky01.html",
              "https://www.basketball-reference.com/players/d/davisan02.html",
              "https://www.basketball-reference.com/players/c/cartevi01.html",
              "https://www.basketball-reference.com/players/j/jamesle01.html",
-             "https://www.basketball-reference.com/players/d/doncilu01.html",
-             "https://www.basketball-reference.com/players/m/mingya01.html"
+             "https://www.basketball-reference.com/players/d/doncilu01.html"
+
 
 ]
 
-best_players = ["Kyrie Irving",
+best_players = ["Yao Ming",
+                "Kyrie Irving",
                 "Anthony Davis",
                 "Vince Carter",
                 "Lebron James",
-                "Luka Doncic",
-                "Yao Ming"
+                "Luka Doncic"
+
 ]
 
 
-worst_urls = ["https://www.basketball-reference.com/players/c/clarkjo01.html",
+worst_urls = ["https://www.basketball-reference.com/players/v/veselja01.html",
               "https://www.basketball-reference.com/players/m/mudiaem01.html",
               "https://www.basketball-reference.com/players/o/okafoja01.html",
               "https://www.basketball-reference.com/players/b/battish01.html",
@@ -26,7 +28,7 @@ worst_urls = ["https://www.basketball-reference.com/players/c/clarkjo01.html",
 
 ]
 
-worst_players = ["Jordan Clarkson",
+worst_players = ["Jan Vesely",
                  "Emmanuel Mudiay",
                  "Jahil Okafor",
                  "Shane Battier",
