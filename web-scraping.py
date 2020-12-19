@@ -72,7 +72,6 @@ def clean_data1(player_info, rank):
         temp_dict[rank[index]] = temp_list
 
     df = pd.DataFrame.from_dict(temp_dict).transpose()
-
     df.columns = [categories]
 
     return df
@@ -179,11 +178,3 @@ if __name__ == "__main__":
     print(f"\n- - - Runtime:{(time.time() - start_time): .2f}s - - -")
 
     # plt.show()
-
-
-
-
-
-
-
-
